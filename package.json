@@ -1,0 +1,93 @@
+{
+	"name": "vscode-idobata",
+	"displayName": "Idobata",
+	"description": "Send message or editor text to idobata from VSCode.",
+	"version": "0.0.1",
+	"private": true,
+	"icon": "resources/icon.png",
+	"publisher": "ykhrito",
+	"author": {
+		"name": "Yukihiro Ito",
+		"email": "yukihiro.ito@gmail.com",
+		"url": "https://github.com/ykhrito/"
+	},
+	"repository": {
+			"type": "git",
+			"url": "https://github.com/ykhrito/vscode-idobata"
+	},
+	"bugs": {
+			"url": "https://github.com/ykhrito/vscode-idobata/issues"
+	},
+	"license": "MIT",
+	"galleryBanner": {
+		"color": "#433A37",
+		"theme": "dark"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": ["Idobata"],
+	"engines": {
+		"vscode": "^1.35.0"
+	},
+	"activationEvents": [
+		"*"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "idobata.sendMessage",
+				"title": "Idobata: Send a message"
+			},
+			{
+				"command": "idobata.sendEditorText",
+				"title": "Idobata: Send text in current editor"
+			},
+			{
+				"command": "idobata.sendEditorTextSelection",
+				"title": "Idobata: Send selected text"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Idobata",
+			"properties": {
+				"idobata.accessToken": {
+					"type": "string",
+					"default": "",
+					"description": "Access Token for idobata API."
+				},
+				"idobata.defaultRoom": {
+					"type": "string",
+					"default": "",
+					"description": "Default room name."
+				},
+				"idobata.rememberRoom": {
+					"type": "boolean",
+					"default": true,
+					"description": "Remember previous room selection."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
+	},
+	"dependencies": {
+		"request": "^2.88.0",
+		"request-promise": "^4.2.4"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.42",
+		"@types/node": "^10.12.21",
+		"@types/request": "^2.0.9",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.28"
+	}
+}
