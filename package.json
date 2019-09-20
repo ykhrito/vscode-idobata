@@ -12,11 +12,11 @@
 		"url": "https://github.com/ykhrito/"
 	},
 	"repository": {
-			"type": "git",
-			"url": "https://github.com/ykhrito/vscode-idobata"
+		"type": "git",
+		"url": "https://github.com/ykhrito/vscode-idobata"
 	},
 	"bugs": {
-			"url": "https://github.com/ykhrito/vscode-idobata/issues"
+		"url": "https://github.com/ykhrito/vscode-idobata/issues"
 	},
 	"license": "MIT",
 	"galleryBanner": {
@@ -26,7 +26,9 @@
 	"categories": [
 		"Other"
 	],
-	"keywords": ["Idobata"],
+	"keywords": [
+		"Idobata"
+	],
 	"engines": {
 		"vscode": "^1.35.0"
 	},
