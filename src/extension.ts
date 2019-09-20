@@ -6,20 +6,50 @@ let extension: vscode.ExtensionContext;
 let commands: vscode.Disposable[] = [];
 let idobata: Idobata | undefined;
 
+class Room
+{
+  constructor(private _name: string, private _id: string, private _organization: string)
+  {
+  }
+
+  get name(): string
+  {
+    return this._name;
+  }
+
+  get id(): string
+  {
+    return this._id;
+  }
+
+  get organization(): string
+  {
+    return this._organization;
+  }
+
+  get fullName(): string
+  {
+    return this.organization + ': ' + this.name;
+  }
+}
+
 class Idobata
 {
   static get AUTH_URL(): string { return 'https://idobata.io/oauth/token'; }
   static get API_URL(): string { return 'https://api.idobata.io/graphql'; }
   private token!: string;
-  private rooms: { [key: string]: string; } = {};
+  private rooms: Room[] = new Array();
   private roomId!: string;
-  private defaultRoom!: string;
+  private default: {organization: string, room: string } = { organization: '', room: '' };
   private rememberRoom: boolean = true;
 
-  constructor(token: string, defaultRoom: string, remember: boolean)
+  constructor(token: string, defaultRoom: {organization: string, room: string } | undefined, remember: boolean)
   {
     this.token = token;
-    this.defaultRoom = defaultRoom;
+    if (defaultRoom) {
+      this.default.organization = defaultRoom.organization;
+      this.default.room = defaultRoom.room;
+    }
     this.rememberRoom = remember;
     this.getRoomNames()
     .catch((err: any) => {
@@ -157,13 +187,13 @@ class Idobata
 
   private async getRoomNamesAsync(): Promise<string[]>
   {
-    if (Object.keys(this.rooms).length > 0) {
+    if (this.rooms.length > 0) {
       return this.getRoomNames();
     } else {
       return this.getRoomList()
       .then((body: any) => {
         body.data.viewer.rooms.edges.forEach((edge: any) => {
-          this.rooms[edge.node.name] = edge.node.id;
+          this.rooms.push(new Room(edge.node.name, edge.node.id, edge.node.organization.name));
         });
         return this.getRoomNames();
       });
@@ -173,18 +203,18 @@ class Idobata
   private getRoomList()
   {
     return this.sendQuery({
-      'query': 'query { viewer { rooms { edges { node { id name } } } } }'
+      'query': 'query { viewer { rooms { edges { node { id name organization { id name } } } } } }'
     });
   }
 
   private getRoomNames(): Promise<string[]>
   {
     var names = new Array<string>();
-    Object.keys(this.rooms).forEach((name) => {
-      if (name === this.defaultRoom) {
-        names.unshift(name);
+    this.rooms.forEach((room) => {
+      if (room.name === this.default.room && room.organization === this.default.organization) {
+        names.unshift(room.fullName);
       } else {
-        names.push(name);
+        names.push(room.fullName);
       }
     });
     return Promise.resolve<string[]>(names);
@@ -193,14 +223,21 @@ class Idobata
   private getRoomId(roomName: string): string
   {
     var roomId: string = "";
-    Object.keys(this.rooms).forEach((name) =>{
-      if (name === roomName) {
-        roomId = this.rooms[name];
-        if (this.rememberRoom) {
-          this.defaultRoom = name;
+    const match = roomName.match(/^(.+):(.+)$/);
+    if (match !== null) {
+      const organization = match[1].trim();
+      const name = match[2].trim();
+      this.rooms.forEach((room) => {
+        if (room.name === name && room.organization === organization)
+        {
+          roomId = room.id;
+          if (this.rememberRoom) {
+            this.default.organization = organization;
+            this.default.room = name;
+          }
         }
-      }
-    });
+      });
+    }
     return roomId;
   }
 
@@ -253,7 +290,7 @@ function loadConfigurations()
     vscode.window.showErrorMessage('Idobata: Please set accessToken in configuration.');
     return;
   }
-  const defaultRoom: string = configuration.get('defaultRoom') || '';
+  const defaultRoom: {organization: string, room: string} | undefined = configuration.get('defaultRoom');
   const rememberRoom: boolean = configuration.get('rememberRoom') || false;
 
   //idobata = new Idobata(username, password, defaultRoom, rememberRoom);
