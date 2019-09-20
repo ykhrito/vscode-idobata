@@ -2,7 +2,7 @@
 	"name": "vscode-idobata",
 	"displayName": "Idobata",
 	"description": "Send message or editor text to idobata from VSCode.",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"icon": "resources/icon.png",
 	"publisher": "ykhrito",
@@ -59,9 +59,19 @@
 					"description": "Access Token for idobata API."
 				},
 				"idobata.defaultRoom": {
-					"type": "string",
-					"default": "",
-					"description": "Default room name."
+					"type": "object",
+					"default": null,
+					"description": "Default room. Set organization and room name as follows: {\"organization\": \"foo\", \"room\": \"bar\"}",
+					"properties": {
+						"organization": {
+							 "type": "string",
+							 "description": "Organization name"
+						},
+						"room": {
+							"type": "string",
+							"description": "Room name"
+						}
+					}
 				},
 				"idobata.rememberRoom": {
 					"type": "boolean",

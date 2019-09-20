@@ -8,10 +8,22 @@ Send message or editor text to idobata.
 
 * `idobata.accessToken` (required)
   * Specify Idobata API Access Token. Please [see here](https://idobata.io/ja/api) how to get a token.
-* `idobata.defaultRoom` (optional, default: "")
+* `idobata.defaultRoom` (optional, default: null)
   * Default room name.
 * `idobata.rememberRoom` (optional, default: true)
   * Set previously selected room to default.
+
+### Example Initial Configuration
+
+```json
+"idobata.accessToken": "blah blah blah",
+"idobata.defaultRoom": {
+  "organization": "Foo Bar Electronics",
+  "room": "lounge"
+},
+"idobata.rememberRoom": true
+```
+
 
 ## Usage
 
@@ -29,6 +41,10 @@ Open Command Palette (Ctrl + Shift + P / Cmd + Shift + P), type "idobata" and se
 MIT
 
 ## Releases
+
+### 0.0.2
+
+Handle the organization properly.
 
 ### 0.0.1
 
