@@ -39,13 +39,3 @@ Open Command Palette (Ctrl + Shift + P / Cmd + Shift + P), type "idobata" and se
 ## License
 
 MIT
-
-## Releases
-
-### 0.0.2
-
-Handle the organization properly.
-
-### 0.0.1
-
-Initial release.
