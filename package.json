@@ -2,7 +2,7 @@
 	"name": "vscode-idobata",
 	"displayName": "Idobata",
 	"description": "Send message or editor text to idobata from VSCode.",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"private": true,
 	"icon": "resources/icon.png",
 	"publisher": "ykhrito",
@@ -66,8 +66,8 @@
 					"description": "Default room. Set organization and room name as follows: {\"organization\": \"foo\", \"room\": \"bar\"}",
 					"properties": {
 						"organization": {
-							 "type": "string",
-							 "description": "Organization name"
+							"type": "string",
+							"description": "Organization name"
 						},
 						"room": {
 							"type": "string",
