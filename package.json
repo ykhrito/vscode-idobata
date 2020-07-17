@@ -2,7 +2,7 @@
 	"name": "vscode-idobata",
 	"displayName": "Idobata",
 	"description": "Send message or editor text to idobata from VSCode.",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"private": true,
 	"icon": "resources/icon.png",
 	"publisher": "ykhrito",
